@@ -22,7 +22,7 @@ public class GitRepository {
 
 	public List<CommitDTO> getCommits() throws GitAPIException, IOException {
 		List<CommitDTO> commits = new ArrayList<CommitDTO>();
-		var formatter = new DiffFormatter(new ByteArrayOutputStream());
+		DiffFormatter formatter = new DiffFormatter(new ByteArrayOutputStream());
 		formatter.setRepository(this.git.getRepository());
 
 		for (RevCommit commit : this.git.log().call()) {
