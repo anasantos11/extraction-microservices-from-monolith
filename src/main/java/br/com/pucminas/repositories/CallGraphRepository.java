@@ -26,20 +26,24 @@ public class CallGraphRepository {
 	}
 
 	public List<ParentMethodDTO> getCallGraph() throws IOException {
+		String line;
+		try (BufferedReader bufferedReader = new BufferedReader(new StringReader(getMethods()))) {
+			while ((line = bufferedReader.readLine()) != null) {
+				fillMethod(line);
+			}
+		}
+
+		return this.methods.values().stream().collect(Collectors.toList());
+	}
+
+	private String getMethods() {
 		PrintStream myStream = System.out;
 		ByteArrayOutputStream resultBuffer = new ByteArrayOutputStream();
 		System.setOut(new PrintStream(resultBuffer));
 		JCallGraph.main(new String[] { jarFile.getPath() });
 		System.setOut(myStream);
-
-		String line;
-
-		BufferedReader bufferedReader = new BufferedReader(new StringReader(new String(resultBuffer.toByteArray())));
-		while ((line = bufferedReader.readLine()) != null) {
-			fillMethod(line);
-		}
-
-		return this.methods.values().stream().collect(Collectors.toList());
+		
+		return new String(resultBuffer.toByteArray());
 	}
 
 	private void fillMethod(String line) {
