@@ -19,10 +19,12 @@ public class CallGraphRepository {
 
 	private File jarFile;
 	private Map<String, ParentMethodDTO> methods;
+	private List<String> includedPackages;
 
-	public CallGraphRepository(File jarFile) {
+	public CallGraphRepository(File jarFile, List<String> includedPackages) {
 		this.jarFile = jarFile;
 		this.methods = new HashMap<>();
+		this.includedPackages = includedPackages;
 	}
 
 	public List<ParentMethodDTO> getCallGraph() throws IOException {
@@ -42,7 +44,7 @@ public class CallGraphRepository {
 		System.setOut(new PrintStream(resultBuffer));
 		JCallGraph.main(new String[] { jarFile.getPath() });
 		System.setOut(myStream);
-		
+
 		return new String(resultBuffer.toByteArray());
 	}
 
@@ -60,12 +62,20 @@ public class CallGraphRepository {
 			String typeOfCall = calledMethodData[0].substring(1, 2);
 			String methodNameCalled = calledMethodData[1];
 
-			if (!this.methods.containsKey(parenteMethodName)) {
-				this.methods.put(parenteMethodName, new ParentMethodDTO(parentClassName, parenteMethodName));
+			if (includedPackages.stream().anyMatch(includedPackage -> parentClassName.startsWith(includedPackage))) {
+				if (!this.methods.containsKey(parenteMethodName)) {
+					this.methods.put(parenteMethodName, new ParentMethodDTO(parentClassName, parenteMethodName));
+				}
+
+				if (includedPackages.stream()
+						.anyMatch(includedPackage -> classNameMethodCalled.startsWith(includedPackage))) {
+					ParentMethodDTO method = this.methods.get(parenteMethodName);
+					method.getMethodsCalled()
+							.add(new MethodCalledDTO(classNameMethodCalled, methodNameCalled, typeOfCall));
+				}
+
 			}
 
-			ParentMethodDTO method = this.methods.get(parenteMethodName);
-			method.getMethodsCalled().add(new MethodCalledDTO(classNameMethodCalled, methodNameCalled, typeOfCall));
 		}
 	}
 }
