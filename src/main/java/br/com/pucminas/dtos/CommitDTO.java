@@ -3,20 +3,27 @@ package br.com.pucminas.dtos;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Getter;
-
 public class CommitDTO {
-	@Getter
 	private String commitId;
-	@Getter
 	private String authorEmail;
-	@Getter
 	private List<String> changedFiles;
 
 	public CommitDTO(String commitId, String authorEmail, List<String> files) {
 		this.commitId = commitId;
 		this.authorEmail = authorEmail;
 		this.changedFiles = files;
+	}
+
+	public String getCommitId() {
+		return this.commitId;
+	}
+
+	public String getAuthorEmail() {
+		return this.authorEmail;
+	}
+
+	public List<String> getChangedFiles() {
+		return this.changedFiles;
 	}
 
 	public String ToString() {
