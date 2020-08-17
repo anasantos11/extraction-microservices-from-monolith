@@ -33,6 +33,18 @@ public class ClassName {
 	}
 
 	@Override
+	public boolean equals(Object comparedObject) {
+		if (this == comparedObject)
+			return true;
+		
+		if (comparedObject == null || getClass() != comparedObject.getClass())
+			return false;
+		
+		ClassName className = (ClassName) comparedObject;
+		return this.className.equals(className.getClassName());
+	}
+
+	@Override
 	public String toString() {
 		return "Class Name = " + this.className;
 	}
