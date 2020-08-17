@@ -17,10 +17,18 @@ import br.com.pucminas.repositories.GitRepository;
 public class ServiceBL {
 	private GitRepository gitRepository;
 	private CallGraphRepository callGraphRepository;
+	private byte weightClassItem;
+	private byte weightMethodItem;
+	private byte weightHistoryItem;
+	private byte lowerLimitToGroup;
 
-	public ServiceBL(GitRepository gitRepository, CallGraphRepository callGraphRepository) {
+	public ServiceBL(GitRepository gitRepository, CallGraphRepository callGraphRepository, byte weightClassItem, byte weightMethodItem, byte weightHistoryItem, byte lowerLimitToGroup) {
 		this.gitRepository = gitRepository;
 		this.callGraphRepository = callGraphRepository;
+		this.weightClassItem = weightClassItem;
+		this.weightMethodItem = weightMethodItem;
+		this.weightHistoryItem = weightHistoryItem;
+		this.lowerLimitToGroup = lowerLimitToGroup;
 	}
 
 	public List<Method> getCandidateServices() throws IOException, GitAPIException {

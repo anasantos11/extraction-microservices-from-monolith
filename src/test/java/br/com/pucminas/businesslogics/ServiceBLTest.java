@@ -59,7 +59,8 @@ public class ServiceBLTest {
 		when(mockGitRepository.getCommits()).thenReturn(mockCommits);
 		when(mockCallGraphRepository.getCallGraph()).thenReturn(mockMethods);
 
-		ServiceBL service = new ServiceBL(mockGitRepository, mockCallGraphRepository);
+		ServiceBL service = new ServiceBL(mockGitRepository, mockCallGraphRepository, (byte) 1, (byte) 1, (byte) 1,
+				(byte) 80);
 		List<Method> results = service.getCandidateServices();
 
 		assertNotNull(results);
