@@ -68,6 +68,7 @@ public class ServiceBLTest {
 				methodResult -> methodResult.getClassName().getClassName().equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodName().equals("MethodNameA")
 						&& methodResult.getMethodsThatReferenceIt().size() == 0
+						&& methodResult.getMethodsCalled().size() == 2
 						&& methodResult.getClassName().getCommitIds().size() == 1
 						&& methodResult.getClassName().getCommitIds().contains("C1")
 						&& methodResult.isCandidateService()));
@@ -76,6 +77,7 @@ public class ServiceBLTest {
 				methodResult -> methodResult.getClassName().getClassName().equals("br.com.pucminas.ClassNameB")
 						&& methodResult.getMethodName().equals("MethodNameB")
 						&& methodResult.getMethodsThatReferenceIt().size() == 0
+						&& methodResult.getMethodsCalled().size() == 0
 						&& methodResult.getClassName().getCommitIds().size() == 1
 						&& methodResult.getClassName().getCommitIds().contains("C1")
 						&& methodResult.isCandidateService()));
@@ -84,6 +86,7 @@ public class ServiceBLTest {
 						.equals("br.com.pucminas.ClassNameMethodCalledA")
 						&& methodResult.getMethodName().equals("MethodNameCalledA")
 						&& methodResult.getMethodsThatReferenceIt().size() == 1
+						&& methodResult.getMethodsCalled().size() == 0
 						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getClassName()
 								.equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodsThatReferenceIt().get(0).getMethodName().equals("MethodNameA")
@@ -94,6 +97,7 @@ public class ServiceBLTest {
 						.equals("br.com.pucminas.ClassNameMethodCalledB")
 						&& methodResult.getMethodName().equals("MethodNameCalledB")
 						&& methodResult.getMethodsThatReferenceIt().size() == 1
+						&& methodResult.getMethodsCalled().size() == 0
 						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getClassName()
 								.equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodsThatReferenceIt().get(0).getMethodName().equals("MethodNameA")

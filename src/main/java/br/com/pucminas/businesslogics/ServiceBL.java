@@ -37,13 +37,18 @@ public class ServiceBL {
 							new ClassName(methodCalled.getClassName(), methodCalled.getSourceFileName())))
 					.collect(Collectors.toList());
 
+			List<Method> methodsCalled = parentMethodDTO.getMethodsCalled().stream()
+					.map(methodCalled -> new Method(methodCalled.getMethodName(),
+							new ClassName(methodCalled.getClassName(), methodCalled.getSourceFileName())))
+					.collect(Collectors.toList());
+
 			List<String> commitIds = commitsDiscovered.stream()
 					.filter(commit -> commit.getChangedFiles().contains(parentMethodDTO.getSourceFileName()))
 					.map(commit -> commit.getCommitId()).collect(Collectors.toList());
 
 			var method = new Method(parentMethodDTO.getMethodName(),
 					new ClassName(parentMethodDTO.getClassName(), parentMethodDTO.getSourceFileName(), commitIds),
-					methodsThatReferenceIt);
+					methodsThatReferenceIt, methodsCalled);
 			methods.add(method);
 		}
 		return methods;

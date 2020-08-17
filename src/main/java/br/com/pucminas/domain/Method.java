@@ -8,17 +8,21 @@ public class Method {
 	private String methodName;
 	private ClassName className;
 	private List<Method> methodsThatReferenceIt;
+	private List<Method> methodsCalled;
 
-	public Method(String methodName, ClassName className, List<Method> methodsThatReferenceIt) {
+	public Method(String methodName, ClassName className, List<Method> methodsThatReferenceIt,
+			List<Method> methodsCalled) {
 		this.methodName = methodName;
 		this.className = className;
 		this.methodsThatReferenceIt = methodsThatReferenceIt;
+		this.methodsCalled = methodsCalled;
 	}
 
 	public Method(String methodName, ClassName className) {
 		this.methodName = methodName;
 		this.className = className;
 		this.methodsThatReferenceIt = new ArrayList<Method>();
+		this.methodsCalled = new ArrayList<Method>();
 	}
 
 	public String getMethodName() {
@@ -33,6 +37,10 @@ public class Method {
 		return methodsThatReferenceIt;
 	}
 
+	public List<Method> getMethodsCalled() {
+		return methodsCalled;
+	}
+
 	public boolean isCandidateService() {
 		return this.methodsThatReferenceIt.size() == 0;
 	}
@@ -42,6 +50,7 @@ public class Method {
 		return this.className.toString() + "; Method Name = " + this.methodName
 				+ (this.methodsThatReferenceIt.size() > 0
 						? "; Methods That Reference It = " + Arrays.toString(methodsThatReferenceIt.toArray())
-						: "");
+						: "")
+				+ Arrays.toString(this.className.getCommitIds().toArray());
 	}
 }
