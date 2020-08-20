@@ -47,15 +47,12 @@ public class Method {
 	}
 
 	public List<ClassName> getClasses() {
-		List<ClassName> classes = this.methodsCalled.stream().map(method -> method.getClassName())
+		return this.methodsCalled.stream().map(method -> method.getClassName())
 				.collect(Collectors.toList());
-		return classes;
 	}
 
 	public List<Method> getMethods() {
-		List<Method> methods = this.methodsCalled;
-
-		return methods;
+		return this.methodsCalled;
 	}
 
 	public List<String> getCommitIds() {
@@ -64,6 +61,19 @@ public class Method {
 		commits.addAll(this.className.getCommitIds());
 
 		return commits;
+	}
+
+	@Override
+	public boolean equals(Object comparedObject) {
+		if (this == comparedObject)
+			return true;
+
+		if (comparedObject == null || getClass() != comparedObject.getClass())
+			return false;
+
+		Method comparedMethod = (Method) comparedObject;
+		return this.className.equals(comparedMethod.getClassName())
+				&& this.methodName.equals(comparedMethod.getMethodName());
 	}
 
 	@Override
