@@ -57,21 +57,26 @@ public class CallGraphRepository {
 			String parentClassName = parentMethodData[0];
 			String parenteMethodName = parentMethodData[1];
 
+			if (includedPackages.stream().noneMatch(parentClassName::startsWith)
+					|| parenteMethodName.startsWith("<init>") || parenteMethodName.startsWith("<clinit>"))
+				return;
+
 			String[] calledMethodData = data[1].split(":");
 			String classNameMethodCalled = calledMethodData[0].substring(3);
 			String typeOfCall = calledMethodData[0].substring(1, 2);
 			String methodNameCalled = calledMethodData[1];
 
-			if (includedPackages.stream().anyMatch(includedPackage -> parentClassName.startsWith(includedPackage))
-					&& includedPackages.stream()
-							.anyMatch(includedPackage -> classNameMethodCalled.startsWith(includedPackage))) {
-				if (!this.methods.containsKey(data[0])) {
-					this.methods.put(data[0], new ParentMethodDTO(parentClassName, parenteMethodName));
-				}
+			if (includedPackages.stream().noneMatch(classNameMethodCalled::startsWith)
+					|| methodNameCalled.startsWith("<init>") || methodNameCalled.startsWith("<clinit>"))
+				return;
 
-				ParentMethodDTO method = this.methods.get(data[0]);
-				method.getMethodsCalled().add(new MethodCalledDTO(classNameMethodCalled, methodNameCalled, typeOfCall));
+			if (!this.methods.containsKey(data[0])) {
+				this.methods.put(data[0], new ParentMethodDTO(parentClassName, parenteMethodName));
 			}
+
+			ParentMethodDTO method = this.methods.get(data[0]);
+			method.getMethodsCalled().add(new MethodCalledDTO(classNameMethodCalled, methodNameCalled, typeOfCall));
+
 		}
 	}
 }
