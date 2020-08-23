@@ -1,10 +1,14 @@
 package br.com.pucminas.businesslogics;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -35,20 +39,19 @@ public class ServiceBL {
 		this.lowerLimitToGroup = lowerLimitToGroup;
 	}
 
-	public Map<String, List<Method>> groupServicesInMicroservices() throws IOException, GitAPIException {
+	public Map<String, Set<Method>> groupServicesInMicroservices() throws IOException, GitAPIException {
 		SimilarityMatrixCell[][] similarityMatrix = generateSimilarityMatrix();
-		Map<String, List<Method>> microservices = new HashMap<>();
+		Map<String, Set<Method>> microservices = new HashMap<>();
 		int numberOfMicroservices = 0;
 
 		for (int r = 0; r < similarityMatrix.length; r++) {
-			List<Method> similarServices = new ArrayList<>();
-			similarServices.add(similarityMatrix[r][0].getLineMethod());
+			Set<Method> similarServices = new HashSet<>();
 
 			for (int c = 0; c < similarityMatrix.length; c++) {
 				SimilarityMatrixCell similarity = similarityMatrix[r][c];
 
 				if (similarity.getSimilarity() >= lowerLimitToGroup)
-					similarServices.add(similarity.getLineMethod());
+					similarServices.add(similarity.getColumnMethod());
 			}
 
 			if (anyMicroserviceContainsAnySimilarService(similarServices, microservices)) {
@@ -62,16 +65,16 @@ public class ServiceBL {
 		return microservices;
 	}
 
-	private boolean anyMicroserviceContainsAnySimilarService(List<Method> similarServices,
-			Map<String, List<Method>> microservices) {
+	private boolean anyMicroserviceContainsAnySimilarService(Set<Method> similarServices,
+			Map<String, Set<Method>> microservices) {
 		return similarServices.stream().anyMatch(
 				service -> microservices.values().stream().anyMatch(microservice -> microservice.contains(service)));
 	}
 
-	private void addSimilarServicesInExistsMicroservice(List<Method> similarServices,
-			Map<String, List<Method>> microservices) {
-		for (List<Method> services : microservices.values()) {
-			if (similarServices.stream().anyMatch(service -> services.contains(service))) {
+	private void addSimilarServicesInExistsMicroservice(Set<Method> similarServices,
+			Map<String, Set<Method>> microservices) {
+		for (Set<Method> services : microservices.values()) {
+			if (similarServices.stream().anyMatch(service -> services.contains(service) )) {
 				services.addAll(similarServices);
 				return;
 			}
@@ -116,16 +119,25 @@ public class ServiceBL {
 		SimilarityMatrixCell[][] similarityMatrix = new SimilarityMatrixCell[candidateServices.size()][candidateServices
 				.size()];
 		int rowIndex = 0;
+		try (FileWriter fileWriter = new FileWriter("similarity-matrix.log")) {
+			try (PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
+				for (Method lineMethod : candidateServices) {
+					int columnIndex = 0;
+					String lineMethodName = lineMethod.getClassName().getClassName() + ":" + lineMethod.getMethodName();
 
-		for (Method lineMethod : candidateServices) {
-			int columnIndex = 0;
+					for (Method columnMethod : candidateServices) {
+						double similarity = calculateSimilarity(lineMethod, columnMethod);
+						String columnMethodName = columnMethod.getClassName().getClassName() + ":"
+								+ columnMethod.getMethodName();
+						printWriter.println(lineMethodName + "-" + columnMethodName + "-" + similarity);
 
-			for (Method columnMethod : candidateServices) {
-				similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
-						calculateSimilarity(lineMethod, columnMethod));
-				++columnIndex;
+						similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
+								similarity);
+						++columnIndex;
+					}
+					++rowIndex;
+				}
 			}
-			++rowIndex;
 		}
 
 		return similarityMatrix;
