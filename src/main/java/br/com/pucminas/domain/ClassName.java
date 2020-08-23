@@ -17,7 +17,7 @@ public class ClassName {
 	public ClassName(String className, String sourceFileName) {
 		this.className = className;
 		this.sourceFileName = sourceFileName;
-		this.commitIds = new ArrayList<String>();
+		this.commitIds = new ArrayList<>();
 	}
 
 	public String getClassName() {
@@ -36,12 +36,17 @@ public class ClassName {
 	public boolean equals(Object comparedObject) {
 		if (this == comparedObject)
 			return true;
-		
+
 		if (comparedObject == null || getClass() != comparedObject.getClass())
 			return false;
-		
-		ClassName className = (ClassName) comparedObject;
-		return this.className.equals(className.getClassName());
+
+		ClassName comparedClassName = (ClassName) comparedObject;
+		return this.className.equals(comparedClassName.getClassName());
+	}
+
+	@Override
+	public int hashCode() {
+		return (31 + this.className.hashCode()) * 31 + this.sourceFileName.hashCode();
 	}
 
 	@Override

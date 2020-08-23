@@ -22,8 +22,8 @@ public class Method {
 	public Method(String methodName, ClassName className) {
 		this.methodName = methodName;
 		this.className = className;
-		this.methodsThatReferenceIt = new ArrayList<Method>();
-		this.methodsCalled = new ArrayList<Method>();
+		this.methodsThatReferenceIt = new ArrayList<>();
+		this.methodsCalled = new ArrayList<>();
 	}
 
 	public String getMethodName() {
@@ -43,12 +43,11 @@ public class Method {
 	}
 
 	public boolean isCandidateService() {
-		return this.methodsThatReferenceIt.size() == 0;
+		return this.methodsThatReferenceIt.isEmpty();
 	}
 
 	public List<ClassName> getClasses() {
-		return this.methodsCalled.stream().map(method -> method.getClassName())
-				.collect(Collectors.toList());
+		return this.methodsCalled.stream().map(Method::getClassName).collect(Collectors.toList());
 	}
 
 	public List<Method> getMethods() {
@@ -77,9 +76,14 @@ public class Method {
 	}
 
 	@Override
+	public int hashCode() {
+		return (31 + this.methodName.hashCode()) * 31 + this.className.hashCode();
+	}
+
+	@Override
 	public String toString() {
 		return this.className.toString() + "; Method Name = " + this.methodName
-				+ (this.methodsThatReferenceIt.size() > 0
+				+ (!this.methodsThatReferenceIt.isEmpty()
 						? "; Methods That Reference It = " + Arrays.toString(methodsThatReferenceIt.toArray())
 						: "")
 				+ Arrays.toString(this.className.getCommitIds().toArray());
