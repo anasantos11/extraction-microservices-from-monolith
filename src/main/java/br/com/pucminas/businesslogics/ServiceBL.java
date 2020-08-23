@@ -79,7 +79,7 @@ public class ServiceBL {
 	}
 
 	public List<Method> getCandidateServices() throws IOException, GitAPIException {
-		List<Method> methods = new ArrayList<Method>();
+		List<Method> methods = new ArrayList<>();
 		List<ParentMethodDTO> methodsDiscovered = this.callGraphRepository.getCallGraph();
 		List<CommitDTO> commitsDiscovered = this.gitRepository.getCommits();
 
@@ -110,39 +110,42 @@ public class ServiceBL {
 	}
 
 	private SimilarityMatrixCell[][] generateSimilarityMatrix() throws IOException, GitAPIException {
-		List<Method> candidateServices = getCandidateServices().stream()
-				.filter(candidateService -> candidateService.isCandidateService()).collect(Collectors.toList());
+		List<Method> candidateServices = getCandidateServices().stream().filter(Method::isCandidateService)
+				.collect(Collectors.toList());
 
 		SimilarityMatrixCell[][] similarityMatrix = new SimilarityMatrixCell[candidateServices.size()][candidateServices
 				.size()];
 		int rowIndex = 0;
-		int columnIndex = 0;
 
 		for (Method lineMethod : candidateServices) {
+			int columnIndex = 0;
+
 			for (Method columnMethod : candidateServices) {
 				similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
 						calculateSimilarity(lineMethod, columnMethod));
+				++columnIndex;
 			}
+			++rowIndex;
 		}
 
 		return similarityMatrix;
 	}
 
 	private double calculateSimilarity(Method a, Method b) {
-		long numberEqualClasses = a.getClasses().stream().filter(className -> b.getClasses().contains(className))
+		double numberEqualClasses = a.getClasses().stream().filter(className -> b.getClasses().contains(className))
 				.count();
-		long numberEqualMethods = a.getMethods().stream().filter(method -> b.getMethods().contains(method)).count();
-		long numberEqualCommitIds = a.getCommitIds().stream().filter(commitId -> b.getCommitIds().contains(commitId))
+		double numberEqualMethods = a.getMethods().stream().filter(method -> b.getMethods().contains(method)).count();
+		double numberEqualCommitIds = a.getCommitIds().stream().filter(commitId -> b.getCommitIds().contains(commitId))
 				.count();
-		long numberClasses = a.getClasses().size();
-		long numberMethods = a.getMethods().size();
-		long numberCommitIds = a.getCommitIds().size();
+		double numberClasses = a.getClasses().size();
+		double numberMethods = a.getMethods().size();
+		double numberCommitIds = a.getCommitIds().size();
 
-		long numerator = numberEqualClasses * this.weightClassItem + numberEqualMethods * this.weightMethodItem
+		double numerator = numberEqualClasses * this.weightClassItem + numberEqualMethods * this.weightMethodItem
 				+ numberEqualCommitIds * this.weightHistoryItem;
-		long denominator = numberClasses * this.weightClassItem + numberMethods * this.weightMethodItem
+		double denominator = numberClasses * this.weightClassItem + numberMethods * this.weightMethodItem
 				+ numberCommitIds * this.weightHistoryItem;
 
-		return denominator > 0 ? numerator / denominator * 100 : 0;
+		return denominator > 0 ? (numerator / denominator) * 100 : 0;
 	}
 }
