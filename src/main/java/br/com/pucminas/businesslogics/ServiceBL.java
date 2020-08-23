@@ -81,7 +81,7 @@ public class ServiceBL {
 		}
 	}
 
-	public List<Method> getCandidateServices() throws IOException, GitAPIException {
+	private List<Method> getCandidateServices() throws IOException, GitAPIException {
 		List<Method> methods = new ArrayList<>();
 		List<ParentMethodDTO> methodsDiscovered = this.callGraphRepository.getCallGraph();
 		List<CommitDTO> commitsDiscovered = this.gitRepository.getCommits();
@@ -102,7 +102,7 @@ public class ServiceBL {
 
 			List<String> commitIds = commitsDiscovered.stream()
 					.filter(commit -> commit.getChangedFiles().contains(parentMethodDTO.getSourceFileName()))
-					.map(commit -> commit.getCommitId()).collect(Collectors.toList());
+					.map(CommitDTO::getCommitId).collect(Collectors.toList());
 
 			var method = new Method(parentMethodDTO.getMethodName(),
 					new ClassName(parentMethodDTO.getClassName(), parentMethodDTO.getSourceFileName(), commitIds),
