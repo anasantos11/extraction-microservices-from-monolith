@@ -26,7 +26,8 @@ public class CommitDTO {
 		return this.changedFiles;
 	}
 
-	public String ToString() {
+	@Override
+	public String toString() {
 		return "Commit Id = " + this.commitId + "; Author's E-mail = " + this.authorEmail + "; Changed Files = "
 				+ Arrays.toString(changedFiles.toArray());
 	}
