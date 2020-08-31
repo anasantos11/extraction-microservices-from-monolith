@@ -101,7 +101,8 @@ public class ServiceBL {
 					.collect(Collectors.toList());
 
 			List<String> commitIds = commitsDiscovered.stream()
-					.filter(commit -> commit.getChangedFiles().contains(parentMethodDTO.getSourceFileName()))
+					.filter(commit -> commit.getChangedFiles().stream()
+							.anyMatch(changedFile -> changedFile.endsWith(parentMethodDTO.getSourceFileName())))
 					.map(CommitDTO::getCommitId).collect(Collectors.toList());
 
 			var method = new Method(parentMethodDTO.getMethodName(),
