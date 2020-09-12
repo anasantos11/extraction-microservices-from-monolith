@@ -30,6 +30,10 @@ public class Method {
 		return methodName;
 	}
 
+	public String getFullMethodName() {
+		return this.className.getClassName() + ":" + this.methodName;
+	}
+
 	public ClassName getClassName() {
 		return className;
 	}

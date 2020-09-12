@@ -41,8 +41,8 @@ public class App {
                         (byte) 1, (byte) 1, (byte) 50).groupServicesInMicroservices();
 
                 for (Map.Entry<String, Set<Method>> entry : microservices.entrySet()) {
-                    entry.getValue().forEach(service -> printWriterAllItems.println(entry.getKey() + "-"
-                            + service.getClassName().getClassName() + ":" + service.getMethodName()));
+                    entry.getValue().forEach(
+                            service -> printWriterAllItems.println(entry.getKey() + "-" + service.getFullMethodName()));
                 }
             }
         }

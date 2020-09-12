@@ -74,7 +74,7 @@ public class ServiceBL {
 	private void addSimilarServicesInExistsMicroservice(Set<Method> similarServices,
 			Map<String, Set<Method>> microservices) {
 		for (Set<Method> services : microservices.values()) {
-			if (similarServices.stream().anyMatch(service -> services.contains(service) )) {
+			if (similarServices.stream().anyMatch(service -> services.contains(service))) {
 				services.addAll(similarServices);
 				return;
 			}
@@ -124,13 +124,12 @@ public class ServiceBL {
 			try (PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
 				for (Method lineMethod : candidateServices) {
 					int columnIndex = 0;
-					String lineMethodName = lineMethod.getClassName().getClassName() + ":" + lineMethod.getMethodName();
 
 					for (Method columnMethod : candidateServices) {
 						double similarity = calculateSimilarity(lineMethod, columnMethod);
-						String columnMethodName = columnMethod.getClassName().getClassName() + ":"
-								+ columnMethod.getMethodName();
-						printWriter.println(lineMethodName + "-" + columnMethodName + "-" + similarity);
+
+						printWriter.println(lineMethod.getFullMethodName() + "-" + columnMethod.getFullMethodName()
+								+ "-" + similarity);
 
 						similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
 								similarity);
