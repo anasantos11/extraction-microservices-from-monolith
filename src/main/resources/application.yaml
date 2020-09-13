@@ -1,0 +1,3 @@
+server:
+    contextPath: /extraction
+    port: 8000
