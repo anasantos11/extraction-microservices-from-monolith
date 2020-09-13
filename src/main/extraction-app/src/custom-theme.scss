@@ -1,0 +1,134 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+$erhemunerar-primary: (
+  50: #f0f7e8,
+  100: #daebc5,
+  200: #c2de9e,
+  300: #aad077,
+  400: #97c659,
+  500: #85bc3c,
+  600: #7db636,
+  700: #72ad2e,
+  800: #68a527,
+  900: #55971a,
+  A100: #e4ffce,
+  A200: #c7ff9b,
+  A400: #abff68,
+  A700: #9dff4e,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000
+  )
+);
+
+$erhemunerar-accent: (
+    50 : #f0f0f0,
+    100 : #d9d9da,
+    200 : #bfc0c2,
+    300 : #a5a7a9,
+    400 : #929496,
+    500 : #7f8184,
+    600 : #77797c,
+    700 : #6c6e71,
+    800 : #626467,
+    900 : #4f5154,
+    A100 : #c1d8fa,
+    A200 : #92baf5,
+    A400 : #5699ff,
+    A700 : #3c8aff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$erhemunerar-warn: (
+  50: #f7e0e0,
+  100: #ecb3b3,
+  200: #e08080,
+  300: #d34d4d,
+  400: #c92626,
+  500: #c00000,
+  600: #ba0000,
+  700: #b20000,
+  800: #aa0000,
+  900: #9c0000,
+  A100: #ffc7c7,
+  A200: #ff9494,
+  A400: #ff6161,
+  A700: #ff4747,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #ffffff
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+
+$extraction-app-primary: mat-palette(
+  $erhemunerar-primary
+); // $mat-indigo
+$extraction-app-accent: mat-palette(
+  $erhemunerar-accent
+); //$mat-pink, A200, A100, A400
+
+// The warn palette is optional (defaults to red).
+$extraction-app-warn: mat-palette($erhemunerar-warn);//$mat-red
+
+// Create the theme object (a Sass map containing all of the palettes).
+$extraction-app-theme: mat-light-theme(
+  $extraction-app-primary,
+  $extraction-app-accent,
+  $extraction-app-warn
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($extraction-app-theme);
