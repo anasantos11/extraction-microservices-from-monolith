@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassName {
-	private String className;
+	private String name;
 	private String sourceFileName;
 	private List<String> commitIds;
 
 	public ClassName(String className, String sourceFileName, List<String> commitIds) {
-		this.className = className;
+		this.name = className;
 		this.sourceFileName = sourceFileName;
 		this.commitIds = commitIds;
 	}
 
 	public ClassName(String className, String sourceFileName) {
-		this.className = className;
+		this.name = className;
 		this.sourceFileName = sourceFileName;
 		this.commitIds = new ArrayList<>();
 	}
 
-	public String getClassName() {
-		return this.className;
+	public String getName() {
+		return this.name;
 	}
 
 	public String getSourceFileName() {
@@ -41,16 +41,16 @@ public class ClassName {
 			return false;
 
 		ClassName comparedClassName = (ClassName) comparedObject;
-		return this.className.equals(comparedClassName.getClassName());
+		return this.name.equals(comparedClassName.getName());
 	}
 
 	@Override
 	public int hashCode() {
-		return (31 + this.className.hashCode()) * 31 + this.sourceFileName.hashCode();
+		return (31 + this.name.hashCode()) * 31 + this.sourceFileName.hashCode();
 	}
 
 	@Override
 	public String toString() {
-		return "Class Name = " + this.className;
+		return "Class Name = " + this.name;
 	}
 }

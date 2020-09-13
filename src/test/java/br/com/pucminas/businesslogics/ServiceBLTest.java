@@ -80,7 +80,7 @@ public class ServiceBLTest {
 		assertNotNull(results);
 		assertEquals(4, results.size());
 		assertTrue(results.stream().anyMatch(
-				methodResult -> methodResult.getClassName().getClassName().equals("br.com.pucminas.ClassNameA")
+				methodResult -> methodResult.getClassName().getName().equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodName().equals("MethodNameA")
 						&& methodResult.getMethodsThatReferenceIt().size() == 0
 						&& methodResult.getMethodsCalled().size() == 2
@@ -89,7 +89,7 @@ public class ServiceBLTest {
 						&& methodResult.isCandidateService()));
 
 		assertTrue(results.stream().anyMatch(
-				methodResult -> methodResult.getClassName().getClassName().equals("br.com.pucminas.ClassNameB")
+				methodResult -> methodResult.getClassName().getName().equals("br.com.pucminas.ClassNameB")
 						&& methodResult.getMethodName().equals("MethodNameB")
 						&& methodResult.getMethodsThatReferenceIt().size() == 0
 						&& methodResult.getMethodsCalled().size() == 0
@@ -97,23 +97,23 @@ public class ServiceBLTest {
 						&& methodResult.getClassName().getCommitIds().contains("C1")
 						&& methodResult.isCandidateService()));
 		assertTrue(results.stream()
-				.anyMatch(methodResult -> methodResult.getClassName().getClassName()
+				.anyMatch(methodResult -> methodResult.getClassName().getName()
 						.equals("br.com.pucminas.ClassNameMethodCalledA")
 						&& methodResult.getMethodName().equals("MethodNameCalledA")
 						&& methodResult.getMethodsThatReferenceIt().size() == 1
 						&& methodResult.getMethodsCalled().size() == 0
-						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getClassName()
+						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getName()
 								.equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodsThatReferenceIt().get(0).getMethodName().equals("MethodNameA")
 						&& methodResult.getClassName().getCommitIds().size() == 0
 						&& !methodResult.isCandidateService()));
 		assertTrue(results.stream()
-				.anyMatch(methodResult -> methodResult.getClassName().getClassName()
+				.anyMatch(methodResult -> methodResult.getClassName().getName()
 						.equals("br.com.pucminas.ClassNameMethodCalledB")
 						&& methodResult.getMethodName().equals("MethodNameCalledB")
 						&& methodResult.getMethodsThatReferenceIt().size() == 1
 						&& methodResult.getMethodsCalled().size() == 0
-						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getClassName()
+						&& methodResult.getMethodsThatReferenceIt().get(0).getClassName().getName()
 								.equals("br.com.pucminas.ClassNameA")
 						&& methodResult.getMethodsThatReferenceIt().get(0).getMethodName().equals("MethodNameA")
 						&& methodResult.getClassName().getCommitIds().size() == 0

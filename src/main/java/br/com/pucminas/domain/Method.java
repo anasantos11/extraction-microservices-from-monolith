@@ -31,7 +31,7 @@ public class Method {
 	}
 
 	public String getFullMethodName() {
-		return this.className.getClassName() + ":" + this.methodName;
+		return this.className.getName() + ":" + this.methodName;
 	}
 
 	public ClassName getClassName() {
