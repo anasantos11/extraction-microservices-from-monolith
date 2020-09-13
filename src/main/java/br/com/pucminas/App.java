@@ -8,11 +8,15 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import br.com.pucminas.businesslogics.MicroserviceBL;
 import br.com.pucminas.businesslogics.ServiceBL;
 import br.com.pucminas.domain.Method;
+import br.com.pucminas.dtos.ResultDTO;
 import br.com.pucminas.repositories.CallGraphRepository;
 import br.com.pucminas.repositories.GitRepository;
 
@@ -38,12 +42,17 @@ public class App {
         try (FileWriter fileWriterAllItems = new FileWriter("microservices.log")) {
             try (PrintWriter printWriterAllItems = new PrintWriter(fileWriterAllItems, true)) {
                 Map<String, Set<Method>> microservices = new ServiceBL(gitRepository, callGraphRepository, (byte) 1,
-                        (byte) 1, (byte) 1, (byte) 50).groupServicesInMicroservices();
+                        (byte) 1, (byte) 1, (byte) 80).groupServicesInMicroservices();
 
                 for (Map.Entry<String, Set<Method>> entry : microservices.entrySet()) {
                     entry.getValue().forEach(
                             service -> printWriterAllItems.println(entry.getKey() + "-" + service.getFullMethodName()));
                 }
+
+                ResultDTO result = new MicroserviceBL(microservices).generateResultsFromMicroservicesSuggestions();
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.writeValue(new File("target/result.json"), result);
+
             }
         }
     }

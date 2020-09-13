@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Method {
 	private String methodName;
 	private ClassName className;
@@ -26,6 +28,7 @@ public class Method {
 		this.methodsCalled = new ArrayList<>();
 	}
 
+	@JsonIgnore
 	public String getMethodName() {
 		return methodName;
 	}
@@ -34,22 +37,27 @@ public class Method {
 		return this.className.getName() + ":" + this.methodName;
 	}
 
+	@JsonIgnore
 	public ClassName getClassName() {
 		return className;
 	}
 
+	@JsonIgnore
 	public List<Method> getMethodsThatReferenceIt() {
 		return methodsThatReferenceIt;
 	}
 
+	@JsonIgnore
 	public List<Method> getMethodsCalled() {
 		return methodsCalled;
 	}
 
+	@JsonIgnore
 	public boolean isCandidateService() {
 		return this.methodsThatReferenceIt.isEmpty();
 	}
 
+	@JsonIgnore
 	public List<ClassName> getClasses() {
 		return this.methodsCalled.stream().map(Method::getClassName).collect(Collectors.toList());
 	}
@@ -58,6 +66,7 @@ public class Method {
 		return this.methodsCalled;
 	}
 
+	@JsonIgnore
 	public List<String> getCommitIds() {
 		List<String> commits = this.methodsCalled.stream().map(method -> method.getClassName().getCommitIds())
 				.flatMap(List::stream).collect(Collectors.toList());

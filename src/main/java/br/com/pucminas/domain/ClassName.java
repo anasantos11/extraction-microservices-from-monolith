@@ -3,6 +3,8 @@ package br.com.pucminas.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ClassName {
 	private String name;
 	private String sourceFileName;
@@ -28,6 +30,7 @@ public class ClassName {
 		return this.sourceFileName;
 	}
 
+	@JsonIgnore
 	public List<String> getCommitIds() {
 		return this.commitIds;
 	}
