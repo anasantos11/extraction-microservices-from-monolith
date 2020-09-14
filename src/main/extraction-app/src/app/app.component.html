@@ -1,6 +1,63 @@
 <div class="row">
   <div class="col s12">
-      <h5 class="header blue-text darken-1-text">Sugestões para Decomposição</h5>
-      <h6 class="header light">Ferramenta que faz análise do código-fonte de uma aplicação de serviço monolítica e sugere partes para serem extraídas em microsserviços</h6>
+    <h5 class="header blue-text darken-1-text">Sugestões para Decomposição</h5>
+    <h6 class="header light">Ferramenta que faz análise do código-fonte de uma aplicação de serviço monolítica e sugere
+      partes para serem extraídas em microsserviços</h6>
   </div>
 </div>
+
+<div class="row">
+  <div class="input-field col s3">
+    <input matInput name="weightClassItem" type="number" [(ngModel)]="configuration.weightClassItem" placeholder="">
+    <label for="weightClassItem" class="active">Weight Class Item</label>
+  </div>
+  <div class="input-field col s3">
+    <input matInput name="weightMethodItem" type="number" [(ngModel)]="configuration.weightMethodItem" placeholder="">
+    <label for="weightMethodItem" class="active">Weight Method Item</label>
+  </div>
+  <div class="input-field col s3">
+    <input matInput name="weightHistoryItem" type="number" [(ngModel)]="configuration.weightHistoryItem" placeholder="">
+    <label for="weightHistoryItem" class="active">Weight History Item</label>
+  </div>
+  <div class="input-field col s3">
+    <input matInput name="lowerLimitToGroup" type="number" [(ngModel)]="configuration.lowerLimitToGroup" placeholder="">
+    <label for="lowerLimitToGroup" class="active">Lower Limite to Group</label>
+  </div>
+
+  <div class="input-field col s3">
+    <input matInput name="gitRepositoryUri" type="text" [(ngModel)]="configuration.gitRepositoryUri" placeholder="">
+    <label for="gitRepositoryUri" class="active">Git Repository URI</label>
+  </div>
+
+  <div class="input-field col s3">
+    <input matInput name="jarFilePath" type="text" [(ngModel)]="configuration.jarFilePath" placeholder="">
+    <label for="jarFilePath" class="active">Jar File Path</label>
+  </div>
+
+
+  <div class="input-field col s6">
+    <mat-chip-list #includedPackages aria-label="Included Packages">
+      <mat-chip *ngFor="let packageName of configuration.includedPackages" [selectable]="true" [removable]="true"
+        (removed)="removePackage(packageName)">
+        {{packageName}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="New package" [matChipInputFor]="includedPackages"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+        (matChipInputTokenEnd)="addPackage($event)">
+    </mat-chip-list>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col s3">
+    <a class="waves-effect waves-light btn blue" (click)="generateMicroserviceSuggestions()">Generate Microservice
+      Suggestions</a>
+  </div>
+  <div class="col s2">
+    <a class="waves-effect waves-light btn blue" (click)="inicializeConfiguration()">Clean Configuration</a>
+  </div>
+</div>
+
+<div>Configuration: {{configuration|json}}</div>
+<div>Result: {{result|json}}</div>
