@@ -1,12 +1,15 @@
 <div class="row">
   <div class="col s12">
-    <h5 class="header blue-text darken-1-text">Sugestões para Decomposição</h5>
-    <h6 class="header light">Ferramenta que faz análise do código-fonte de uma aplicação de serviço monolítica e sugere
-      partes para serem extraídas em microsserviços</h6>
+    <h4 class="header green-text darken-1-text">Decomposition Suggestions</h4>
+    <p class="header light">Tool that analyzes the source code of a monolithic service application and suggests parts to be extracted in microservices.</p>
   </div>
 </div>
 
 <div class="row">
+  <div class="col s12">
+    <h5 class="header blue-text darken-1-text">Configuration</h5>
+  </div>
+
   <div class="input-field col s3">
     <input matInput name="weightClassItem" type="number" [(ngModel)]="configuration.weightClassItem" placeholder="">
     <label for="weightClassItem" class="active">Weight Class Item</label>
@@ -34,8 +37,8 @@
     <label for="jarFilePath" class="active">Jar File Path</label>
   </div>
 
-
-  <div class="input-field col s6">
+  <div class="input-field col s6 included-packages">
+    <label for="includedPackages" class="active">Included Packages</label>
     <mat-chip-list #includedPackages aria-label="Included Packages">
       <mat-chip *ngFor="let packageName of configuration.includedPackages" [selectable]="true" [removable]="true"
         (removed)="removePackage(packageName)">
@@ -54,10 +57,64 @@
     <a class="waves-effect waves-light btn blue" (click)="generateMicroserviceSuggestions()">Generate Microservice
       Suggestions</a>
   </div>
-  <div class="col s2">
-    <a class="waves-effect waves-light btn blue" (click)="inicializeConfiguration()">Clean Configuration</a>
-  </div>
 </div>
 
-<div>Configuration: {{configuration|json}}</div>
-<div>Result: {{result|json}}</div>
+<div class="row" *ngIf="result">
+  <div class="col s12">
+    <h5 class="header blue-text darken-1-text">Resulted in {{result.numberMicroservices}} Microservices Suggestions</h5>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let microservice of  result.microservices">
+        <tr>
+          <td>{{microservice.name}}</td>
+          <td>{{getNameServices(microservice)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col s12">
+    <h5 class="header blue-text darken-1-text">Class Redundancy</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Percentage Redundancy</th>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let classNameRedundacy of result.classRedundacies">
+        <tr>
+          <td>{{classNameRedundacy.name}}</td>
+          <td>{{classNameRedundacy.percentageRedundancy}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col s12">
+    <h5 class="header blue-text darken-1-text">Method Redundancy</h5>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Percentage Redundancy</th>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let methodRedundancy of result.methodRedundancies">
+        <tr>
+          <td>{{methodRedundancy.name}}</td>
+          <td>{{methodRedundancy.percentageRedundancy}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

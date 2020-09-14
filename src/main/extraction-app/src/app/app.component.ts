@@ -4,6 +4,7 @@ import { ResultSuggestion } from "./model/result-suggestion";
 import { MicroserviceService } from "./service/microservice.service";
 import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import { MatChipInputEvent } from "@angular/material/chips";
+import { Microservice } from "./model/microservice";
 
 @Component({
   selector: "app-root",
@@ -41,6 +42,7 @@ export class AppComponent {
   }
 
   generateMicroserviceSuggestions() {
+    this.result = null;
     this.microserviceService
       .generateMicroserviceSuggestions(this.configuration)
       .subscribe((response) => {
@@ -48,7 +50,9 @@ export class AppComponent {
       });
   }
 
-  inicializeConfiguration() {
-    this.configuration = new Configuration();
+  getNameServices(microservice: Microservice): string {
+    return microservice.services
+      .map((service) => service.fullMethodName)
+      .join("; ");
   }
 }
