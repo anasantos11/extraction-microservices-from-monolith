@@ -57,8 +57,8 @@ public class ServiceBL {
 			if (anyMicroserviceContainsAnySimilarService(similarServices, microservices)) {
 				addSimilarServicesInExistsMicroservice(similarServices, microservices);
 			} else {
-				microservices.put("M" + numberOfMicroservices, similarServices);
 				++numberOfMicroservices;
+				microservices.put("M" + String.format("%02d", numberOfMicroservices), similarServices);
 			}
 		}
 
