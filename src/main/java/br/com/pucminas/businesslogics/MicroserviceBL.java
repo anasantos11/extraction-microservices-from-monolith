@@ -42,7 +42,7 @@ public class MicroserviceBL {
         double numberMicroservicesContainsClass = this.microservices.stream()
                 .filter(microservice -> microservice.getClasses().contains(className)).count();
 
-        return (numberMicroservicesContainsClass / numberMicroservices) * 100;
+        return numberMicroservicesContainsClass / numberMicroservices;
     }
 
     private List<ItemRedundancyDTO> getMethodRedundancies(double numberMicroservices) {
@@ -57,6 +57,6 @@ public class MicroserviceBL {
         double numberMicroservicesContainsClass = this.microservices.stream()
                 .filter(microservice -> microservice.getMethods().contains(method)).count();
 
-        return (numberMicroservicesContainsClass / numberMicroservices) * 100;
+        return numberMicroservicesContainsClass / numberMicroservices;
     }
 }

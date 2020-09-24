@@ -92,9 +92,10 @@
       </thead>
 
       <tbody *ngFor="let classNameRedundacy of result.classRedundacies | sort: 'percentageRedundancy': 'true'">
-        <tr>
+        <tr class="lighten-3"
+          [ngClass]="{'green' : classNameRedundacy.percentageRedundancy <= 0.33,'yellow' : classNameRedundacy.percentageRedundancy > 0.33 && classNameRedundacy.percentageRedundancy <= 0.66,'red' : classNameRedundacy.percentageRedundancy > 0.66}">
           <td>{{classNameRedundacy.name}}</td>
-          <td>{{classNameRedundacy.percentageRedundancy}}</td>
+          <td>{{classNameRedundacy.percentageRedundancy | percent: "1.2-2"}}</td>
         </tr>
       </tbody>
     </table>
@@ -111,9 +112,10 @@
       </thead>
 
       <tbody *ngFor="let methodRedundancy of result.methodRedundancies | sort: 'percentageRedundancy': 'true'">
-        <tr>
+        <tr class="lighten-3"
+          [ngClass]="{'green' : methodRedundancy.percentageRedundancy <= 0.33,'yellow' : methodRedundancy.percentageRedundancy > 0.33 && methodRedundancy.percentageRedundancy <= 0.66,'red' : methodRedundancy.percentageRedundancy > 0.66}">
           <td>{{methodRedundancy.name}}</td>
-          <td>{{methodRedundancy.percentageRedundancy}}</td>
+          <td>{{methodRedundancy.percentageRedundancy | percent : "2.2-2"}}</td>
         </tr>
       </tbody>
     </table>
