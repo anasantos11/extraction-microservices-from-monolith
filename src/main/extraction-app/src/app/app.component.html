@@ -1,7 +1,8 @@
 <div class="row">
   <div class="col s12">
     <h4 class="header green-text darken-1-text">Decomposition Suggestions</h4>
-    <p class="header light">Tool that analyzes the source code of a monolithic service application and suggests parts to be extracted in microservices.</p>
+    <p class="header light">Tool that analyzes the source code of a monolithic service application and suggests parts to
+      be extracted in microservices.</p>
   </div>
 </div>
 
@@ -71,7 +72,7 @@
         </tr>
       </thead>
 
-      <tbody *ngFor="let microservice of  result.microservices">
+      <tbody *ngFor="let microservice of  result.microservices | sort: 'name'">
         <tr>
           <td>{{microservice.name}}</td>
           <td>{{getNameServices(microservice)}}</td>
@@ -90,7 +91,7 @@
         </tr>
       </thead>
 
-      <tbody *ngFor="let classNameRedundacy of result.classRedundacies">
+      <tbody *ngFor="let classNameRedundacy of result.classRedundacies | sort: 'percentageRedundancy': 'true'">
         <tr>
           <td>{{classNameRedundacy.name}}</td>
           <td>{{classNameRedundacy.percentageRedundancy}}</td>
@@ -109,7 +110,7 @@
         </tr>
       </thead>
 
-      <tbody *ngFor="let methodRedundancy of result.methodRedundancies">
+      <tbody *ngFor="let methodRedundancy of result.methodRedundancies | sort: 'percentageRedundancy': 'true'">
         <tr>
           <td>{{methodRedundancy.name}}</td>
           <td>{{methodRedundancy.percentageRedundancy}}</td>

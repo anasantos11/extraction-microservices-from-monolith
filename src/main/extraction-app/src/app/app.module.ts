@@ -7,9 +7,10 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatIconModule } from "@angular/material/icon";
+import { ArraySortPipe } from "./pipe/array-sort.pipe";
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ArraySortPipe],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
