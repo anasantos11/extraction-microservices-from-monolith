@@ -110,6 +110,7 @@ public class ServiceBL {
 					methodsThatReferenceIt, methodsCalled);
 			methods.add(method);
 		}
+
 		return methods;
 	}
 
@@ -120,16 +121,18 @@ public class ServiceBL {
 		SimilarityMatrixCell[][] similarityMatrix = new SimilarityMatrixCell[candidateServices.size()][candidateServices
 				.size()];
 		int rowIndex = 0;
-		try (FileWriter fileWriter = new FileWriter("similarity-matrix.log")) {
+		try (FileWriter fileWriter = new FileWriter("similarity-matrix.log", true)) {
 			try (PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
+
 				for (Method lineMethod : candidateServices) {
 					int columnIndex = 0;
 
 					for (Method columnMethod : candidateServices) {
 						double similarity = calculateSimilarity(lineMethod, columnMethod);
 
-						printWriter.println(lineMethod.getFullMethodName() + "-" + columnMethod.getFullMethodName()
-								+ "-" + similarity);
+						printWriter.println(weightClassItem + "-" + weightMethodItem + "-" + weightHistoryItem + "-"
+								+ lowerLimitToGroup + "-" + lineMethod.getFullMethodName() + "-"
+								+ columnMethod.getFullMethodName() + "-" + similarity);
 
 						similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
 								similarity);
