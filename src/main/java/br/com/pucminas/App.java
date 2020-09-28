@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import br.com.pucminas.businesslogics.MicroserviceBL;
 import br.com.pucminas.businesslogics.ServiceBL;
 import br.com.pucminas.domain.Method;
+import br.com.pucminas.dtos.MicroserviceDTO;
 import br.com.pucminas.dtos.ResultDTO;
 import br.com.pucminas.repositories.CallGraphRepository;
 import br.com.pucminas.repositories.GitRepository;
@@ -40,45 +42,76 @@ public class App {
                 Arrays.asList(INCLUDED_PACKAGE));
 
         List<List<String>> parameters = new ArrayList<>();
-        parameters.add(Arrays.asList("1", "1", "1", "10"));
-        parameters.add(Arrays.asList("1", "1", "1", "20"));
-        parameters.add(Arrays.asList("1", "1", "1", "30"));
-        parameters.add(Arrays.asList("1", "1", "1", "40"));
-        parameters.add(Arrays.asList("1", "1", "1", "50"));
-        parameters.add(Arrays.asList("1", "1", "1", "60"));
-        parameters.add(Arrays.asList("1", "1", "1", "70"));
-        parameters.add(Arrays.asList("1", "1", "1", "80"));
-        parameters.add(Arrays.asList("1", "1", "1", "90"));
 
-        parameters.add(Arrays.asList("1", "0", "0", "10"));
-        parameters.add(Arrays.asList("1", "0", "0", "20"));
-        parameters.add(Arrays.asList("1", "0", "0", "30"));
-        parameters.add(Arrays.asList("1", "0", "0", "40"));
-        parameters.add(Arrays.asList("1", "0", "0", "50"));
-        parameters.add(Arrays.asList("1", "0", "0", "60"));
-        parameters.add(Arrays.asList("1", "0", "0", "70"));
-        parameters.add(Arrays.asList("1", "0", "0", "80"));
-        parameters.add(Arrays.asList("1", "0", "0", "90"));
+        parameters.add(Arrays.asList("0", "0", "1", "10")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "20")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "30")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "40")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "50")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "60")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "70")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "80")); // Somente Histórico
+        parameters.add(Arrays.asList("0", "0", "1", "90")); // Somente Histórico
 
-        parameters.add(Arrays.asList("0", "1", "0", "10"));
-        parameters.add(Arrays.asList("0", "1", "0", "20"));
-        parameters.add(Arrays.asList("0", "1", "0", "30"));
-        parameters.add(Arrays.asList("0", "1", "0", "40"));
-        parameters.add(Arrays.asList("0", "1", "0", "50"));
-        parameters.add(Arrays.asList("0", "1", "0", "60"));
-        parameters.add(Arrays.asList("0", "1", "0", "70"));
-        parameters.add(Arrays.asList("0", "1", "0", "80"));
-        parameters.add(Arrays.asList("0", "1", "0", "90"));
+        parameters.add(Arrays.asList("0", "1", "0", "10")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "20")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "30")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "40")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "50")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "60")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "70")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "80")); // Somente Método
+        parameters.add(Arrays.asList("0", "1", "0", "90")); // Somente Método
 
-        parameters.add(Arrays.asList("0", "0", "1", "10"));
-        parameters.add(Arrays.asList("0", "0", "1", "20"));
-        parameters.add(Arrays.asList("0", "0", "1", "30"));
-        parameters.add(Arrays.asList("0", "0", "1", "40"));
-        parameters.add(Arrays.asList("0", "0", "1", "50"));
-        parameters.add(Arrays.asList("0", "0", "1", "60"));
-        parameters.add(Arrays.asList("0", "0", "1", "70"));
-        parameters.add(Arrays.asList("0", "0", "1", "80"));
-        parameters.add(Arrays.asList("0", "0", "1", "90"));
+        parameters.add(Arrays.asList("1", "0", "0", "10")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "20")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "30")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "40")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "50")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "60")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "70")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "80")); // Somente Classe
+        parameters.add(Arrays.asList("1", "0", "0", "90")); // Somente Classe
+
+        parameters.add(Arrays.asList("1", "1", "0", "10")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "20")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "30")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "40")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "50")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "60")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "70")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "80")); // Classe e Método
+        parameters.add(Arrays.asList("1", "1", "0", "90")); // Classe e Método
+
+        parameters.add(Arrays.asList("1", "0", "1", "10")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "20")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "30")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "40")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "50")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "60")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "70")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "80")); // Classe e Histórico
+        parameters.add(Arrays.asList("1", "0", "1", "90")); // Classe e Histórico
+
+        parameters.add(Arrays.asList("0", "1", "1", "10")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "20")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "30")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "40")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "50")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "60")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "70")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "80")); // Método e Histórico
+        parameters.add(Arrays.asList("0", "1", "1", "90")); // Método e Histórico
+
+        parameters.add(Arrays.asList("1", "1", "1", "10")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "20")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "30")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "40")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "50")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "60")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "70")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "80")); // Todos os itens
+        parameters.add(Arrays.asList("1", "1", "1", "90")); // Todos os itens
 
         parameters.forEach(parameter -> {
             try {
@@ -103,14 +136,104 @@ public class App {
                         weightClassItem, weightMethodItem, weightHistoryItem, lowerLimitToGroup)
                                 .groupServicesInMicroservices();
                 ResultDTO result = new MicroserviceBL(microservices).generateResultsFromMicroservicesSuggestions();
-                result.getMicroservices()
-                        .forEach(microservice -> microservice.getServices()
-                                .forEach(service -> printWriterAllItems.println(weightClassItem + "-" + weightMethodItem
-                                        + "-" + weightHistoryItem + "-" + lowerLimitToGroup + "-"
-                                        + result.getNumberMicroservices() + "-" + microservice.getName() + "-"
-                                        + microservice.getNumberClasses() + "-" + microservice.getNumberMethods() + "-"
-                                        + microservice.getNumberServices() + "-" + service.getFullMethodName())));
+
+                result.getMicroservices().forEach(microservice -> {
+                    microservice.getServices()
+                            .forEach(service -> printWriterAllItems.println(weightClassItem + ";" + weightMethodItem
+                                    + ";" + weightHistoryItem + ";" + lowerLimitToGroup + ";"
+                                    + result.getNumberMicroservices() + ";" + microservice.getName() + ";"
+                                    + microservice.getNumberClasses() + ";" + microservice.getNumberMethods() + ";"
+                                    + microservice.getNumberServices() + ";" + service.getFullMethodName()));
+                });
+
+                fillSilhouetteCoefficient(result, weightClassItem, weightMethodItem, weightHistoryItem,
+                        lowerLimitToGroup);
             }
         }
+    }
+
+    private static void fillSilhouetteCoefficient(ResultDTO result, byte weightClassItem, byte weightMethodItem,
+            byte weightHistoryItem, byte lowerLimitToGroup) throws IOException {
+
+        try (FileWriter fileWriter = new FileWriter("silhouette-coefficient.log", true)) {
+            try (PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
+
+                for (MicroserviceDTO microserviceAtual : result.getMicroservices()) {
+
+                    for (Method serviceAtual : microserviceAtual.getServices()) {
+
+                        // SameMicroservice - Calcular distância do serviço atual com os outros serviços
+                        // no mesmo cluster (variábel a)
+                        double meanDistanceSameMicroservice = getMeanDistance(serviceAtual,
+                                microserviceAtual.getServices(), weightClassItem, weightMethodItem, weightHistoryItem,
+                                lowerLimitToGroup);
+
+                        // Calcular distância do serviço atual com os serviços de outros clusters
+                        // (variábel b)
+                        double meanDistanceNextCluster = Double.MAX_VALUE;
+                        for (MicroserviceDTO nextMicroservice : result.getMicroservices()) {
+
+                            // Ignorar cluster atual
+                            if (!nextMicroservice.getName().equals(microserviceAtual.getName())) {
+
+                                // Calcular distância
+                                double meanDistanceNextClusterAux = getMeanDistance(serviceAtual,
+                                        nextMicroservice.getServices(), weightClassItem, weightMethodItem,
+                                        weightHistoryItem, lowerLimitToGroup);
+
+                                // Para pegar a distância do cluster mais próximo ao atual
+                                if (meanDistanceNextClusterAux < meanDistanceNextCluster)
+                                    meanDistanceNextCluster = meanDistanceNextClusterAux;
+                            }
+
+                        }
+                        // Calcular Silhouette Coefficient = (b - a) / max(a, b)
+                        double silhouetteCoefficient = -100;
+                        double max = Math.max(meanDistanceNextCluster, meanDistanceSameMicroservice);
+                        if (max != 0) {
+                            silhouetteCoefficient = (meanDistanceSameMicroservice - meanDistanceNextCluster) / max;
+                        }
+                        printWriter.println(weightClassItem + ";" + weightMethodItem + ";" + weightHistoryItem + ";"
+                                + lowerLimitToGroup + ";" + microserviceAtual.getName() + ";"
+                                + serviceAtual.getFullMethodName() + ";" + silhouetteCoefficient);
+
+                    }
+                }
+            }
+        }
+    }
+
+    private static double getMeanDistance(Method serviceA, Set<Method> services, byte weightClassItem,
+            byte weightMethodItem, byte weightHistoryItem, byte lowerLimitToGroup) {
+
+        double partialDistanceSameMicroservice = 0;
+        for (Method serviceB : services) {
+            double similarity = calculateSimilarity(serviceA, serviceB, weightClassItem, weightMethodItem,
+                    weightHistoryItem);
+
+            if (similarity < lowerLimitToGroup)
+                partialDistanceSameMicroservice += Math.pow(lowerLimitToGroup - similarity, 2);
+        }
+
+        return Math.sqrt(partialDistanceSameMicroservice);
+    }
+
+    private static double calculateSimilarity(Method a, Method b, byte weightClassItem, byte weightMethodItem,
+            byte weightHistoryItem) {
+        double numberEqualClasses = a.getClasses().stream().filter(className -> b.getClasses().contains(className))
+                .count();
+        double numberEqualMethods = a.getMethods().stream().filter(method -> b.getMethods().contains(method)).count();
+        double numberEqualCommitIds = a.getCommitIds().stream().filter(commitId -> b.getCommitIds().contains(commitId))
+                .count();
+        double numberClasses = a.getClasses().size();
+        double numberMethods = a.getMethods().size();
+        double numberCommitIds = a.getCommitIds().size();
+
+        double numerator = numberEqualClasses * weightClassItem + numberEqualMethods * weightMethodItem
+                + numberEqualCommitIds * weightHistoryItem;
+        double denominator = numberClasses * weightClassItem + numberMethods * weightMethodItem
+                + numberCommitIds * weightHistoryItem;
+
+        return denominator > 0 ? (numerator / denominator) * 100 : 0;
     }
 }

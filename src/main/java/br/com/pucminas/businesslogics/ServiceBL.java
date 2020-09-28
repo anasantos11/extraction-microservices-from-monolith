@@ -130,9 +130,9 @@ public class ServiceBL {
 					for (Method columnMethod : candidateServices) {
 						double similarity = calculateSimilarity(lineMethod, columnMethod);
 
-						printWriter.println(weightClassItem + "-" + weightMethodItem + "-" + weightHistoryItem + "-"
-								+ lowerLimitToGroup + "-" + lineMethod.getFullMethodName() + "-"
-								+ columnMethod.getFullMethodName() + "-" + similarity);
+						printWriter.println(weightClassItem + ";" + weightMethodItem + ";" + weightHistoryItem + ";"
+								+ lowerLimitToGroup + ";" + lineMethod.getFullMethodName() + ";"
+								+ columnMethod.getFullMethodName() + ";" + similarity);
 
 						similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
 								similarity);
