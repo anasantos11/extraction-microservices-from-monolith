@@ -25,7 +25,8 @@ import br.com.pucminas.repositories.GitRepository;
 public class App {
     private static final String JAR_FILE_PATH = "src/test/resources/kanleitos-0.0.1-SNAPSHOT.jar";
     private static final String INCLUDED_PACKAGE = "br.com.kanleitos";
-    private static final String REPOSITORY_PATH_NAME = "target/repos/kanleitos-API";
+    public static final String REPOSITORY_NAME = "kanleitos-API";
+    private static final String REPOSITORY_PATH_NAME = "target/repos/" + REPOSITORY_NAME;
     private static final String REPOSITORY_URI = "https://github.com/anasantos11/kanleitos-API.git";
 
     public static void main(String... args) throws GitAPIException, IOException {
@@ -139,8 +140,8 @@ public class App {
 
                 result.getMicroservices().forEach(microservice -> {
                     microservice.getServices()
-                            .forEach(service -> printWriterAllItems.println(weightClassItem + ";" + weightMethodItem
-                                    + ";" + weightHistoryItem + ";" + lowerLimitToGroup + ";"
+                            .forEach(service -> printWriterAllItems.println(REPOSITORY_NAME + ";" + weightClassItem
+                                    + ";" + weightMethodItem + ";" + weightHistoryItem + ";" + lowerLimitToGroup + ";"
                                     + result.getNumberMicroservices() + ";" + microservice.getName() + ";"
                                     + microservice.getNumberClasses() + ";" + microservice.getNumberMethods() + ";"
                                     + microservice.getNumberServices() + ";" + service.getFullMethodName()));
@@ -193,9 +194,10 @@ public class App {
                         if (max != 0) {
                             silhouetteCoefficient = (meanDistanceSameMicroservice - meanDistanceNextCluster) / max;
                         }
-                        printWriter.println(weightClassItem + ";" + weightMethodItem + ";" + weightHistoryItem + ";"
-                                + lowerLimitToGroup + ";" + microserviceAtual.getName() + ";"
-                                + serviceAtual.getFullMethodName() + ";" + silhouetteCoefficient);
+                        printWriter.println(REPOSITORY_NAME + ";" + weightClassItem + ";" + weightMethodItem + ";"
+                                + weightHistoryItem + ";" + lowerLimitToGroup + ";" + microserviceAtual.getName() + ";"
+                                + serviceAtual.getFullMethodName() + ";" + meanDistanceNextCluster + ";"
+                                + meanDistanceSameMicroservice + ";" + silhouetteCoefficient);
 
                     }
                 }

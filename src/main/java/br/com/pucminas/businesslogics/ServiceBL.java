@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 
+import br.com.pucminas.App;
 import br.com.pucminas.domain.ClassName;
 import br.com.pucminas.domain.Method;
 import br.com.pucminas.domain.SimilarityMatrixCell;
@@ -110,7 +111,12 @@ public class ServiceBL {
 					methodsThatReferenceIt, methodsCalled);
 			methods.add(method);
 		}
-
+		try (FileWriter fileWriter = new FileWriter("methods.log", true)) {
+			try (PrintWriter printWriter = new PrintWriter(fileWriter, true)) {
+				methods.forEach(method -> printWriter.println(
+						App.REPOSITORY_NAME + ";" + method.getFullMethodName() + ";" + method.isCandidateService()));
+			}
+		}
 		return methods;
 	}
 
@@ -130,9 +136,9 @@ public class ServiceBL {
 					for (Method columnMethod : candidateServices) {
 						double similarity = calculateSimilarity(lineMethod, columnMethod);
 
-						printWriter.println(weightClassItem + ";" + weightMethodItem + ";" + weightHistoryItem + ";"
-								+ lowerLimitToGroup + ";" + lineMethod.getFullMethodName() + ";"
-								+ columnMethod.getFullMethodName() + ";" + similarity);
+						printWriter.println(App.REPOSITORY_NAME + ";" + weightClassItem + ";" + weightMethodItem + ";"
+								+ weightHistoryItem + ";" + lowerLimitToGroup + ";" + lineMethod.getFullMethodName()
+								+ ";" + columnMethod.getFullMethodName() + ";" + similarity);
 
 						similarityMatrix[rowIndex][columnIndex] = new SimilarityMatrixCell(lineMethod, columnMethod,
 								similarity);
