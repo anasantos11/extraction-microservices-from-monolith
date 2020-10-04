@@ -61,6 +61,10 @@ public class CallGraphRepository {
 					|| parenteMethodName.startsWith("<init>") || parenteMethodName.startsWith("<clinit>"))
 				return;
 
+			if (parenteMethodName.equals("toString()") || parenteMethodName.equals("hashCode()")
+					|| parenteMethodName.equals("equals(java.lang.Object)"))
+				return;
+
 			String[] calledMethodData = data[1].split(":");
 			String classNameMethodCalled = calledMethodData[0].substring(3);
 			String typeOfCall = calledMethodData[0].substring(1, 2);
@@ -68,6 +72,10 @@ public class CallGraphRepository {
 
 			if (includedPackages.stream().noneMatch(classNameMethodCalled::startsWith)
 					|| methodNameCalled.startsWith("<init>") || methodNameCalled.startsWith("<clinit>"))
+				return;
+
+			if (methodNameCalled.equals("toString()") || methodNameCalled.equals("hashCode()")
+					|| methodNameCalled.equals("equals(java.lang.Object)"))
 				return;
 
 			if (!this.methods.containsKey(data[0])) {
