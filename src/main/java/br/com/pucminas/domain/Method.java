@@ -54,7 +54,7 @@ public class Method {
 
 	@JsonIgnore
 	public boolean isCandidateService() {
-		return this.methodsThatReferenceIt.isEmpty();
+		return this.methodsThatReferenceIt.isEmpty() && !this.methodName.contains("lambda$");
 	}
 
 	@JsonIgnore
