@@ -45,9 +45,14 @@ export class AppComponent {
     this.result = null;
     this.microserviceService
       .generateMicroserviceSuggestions(this.configuration)
-      .subscribe((response) => {
-        this.result = response;
-      });
+      .subscribe(
+        (response) => {
+          this.result = response;
+        },
+        (errorResponse) => {
+          alert("Message: " + errorResponse.message);
+        }
+      );
   }
 
   getNameServices(microservice: Microservice): string {

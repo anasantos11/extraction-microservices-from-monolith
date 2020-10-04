@@ -29,11 +29,6 @@
   </div>
 
   <div class="input-field col s3">
-    <input matInput name="gitRepositoryUri" type="text" [(ngModel)]="configuration.gitRepositoryUri" placeholder="">
-    <label for="gitRepositoryUri" class="active">Git Repository URI</label>
-  </div>
-
-  <div class="input-field col s3">
     <input matInput name="jarFilePath" type="text" [(ngModel)]="configuration.jarFilePath" placeholder="">
     <label for="jarFilePath" class="active">Jar File Path</label>
   </div>
@@ -50,6 +45,30 @@
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
         (matChipInputTokenEnd)="addPackage($event)">
     </mat-chip-list>
+  </div>
+
+  <div class="input-field col s3">
+    <input matInput name="gitRepositoryUri" type="text" [(ngModel)]="configuration.gitRepositoryUri" placeholder="">
+    <label for="gitRepositoryUri" class="active">Git Repository URI</label>
+  </div>
+
+  <div class="col s2">
+    <label>
+      <input matInput name="isPrivateRepository" type="checkbox" class="filled-in"
+        [checked]="configuration.isPrivateRepository" (change)="configuration.isPrivateRepository = !configuration.isPrivateRepository" />
+      <span>Is Private Repository</span>
+    </label>
+  </div>
+
+  <div class="input-field col s3" *ngIf="configuration.isPrivateRepository">
+    <input matInput name="repositoryUserName" type="text" [(ngModel)]="configuration.repositoryUserName" placeholder="">
+    <label for="repositoryUserName" class="active">Repository User Name</label>
+  </div>
+
+  <div class="input-field col s3" *ngIf="configuration.isPrivateRepository">
+    <input matInput name="repositoryPassword" type="password" [(ngModel)]="configuration.repositoryPassword"
+      placeholder="">
+    <label for="repositoryPassword" class="active">Repository Password</label>
   </div>
 </div>
 

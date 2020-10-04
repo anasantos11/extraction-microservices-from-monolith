@@ -8,6 +8,9 @@ public class ConfigurationDTO {
     private byte weightHistoryItem;
     private byte lowerLimitToGroup;
     private String gitRepositoryUri;
+    private boolean isPrivateRepository;
+    private String repositoryUserName;
+    private String repositoryPassword;
     private String jarFilePath;
     private List<String> includedPackages;
 
@@ -37,6 +40,30 @@ public class ConfigurationDTO {
 
     public void setGitRepositoryUri(String gitRepositoryUri) {
         this.gitRepositoryUri = gitRepositoryUri;
+    }
+
+    public String getRepositoryPassword() {
+        return repositoryPassword;
+    }
+
+    public void setRepositoryPassword(String repositoryPassword) {
+        this.repositoryPassword = repositoryPassword;
+    }
+
+    public String getRepositoryUserName() {
+        return repositoryUserName;
+    }
+
+    public void setRepositoryUserName(String repositoryUserName) {
+        this.repositoryUserName = repositoryUserName;
+    }
+
+    public boolean isPrivateRepository() {
+        return isPrivateRepository;
+    }
+
+    public void setIsPrivateRepository(boolean isPrivateRepository) {
+        this.isPrivateRepository = isPrivateRepository;
     }
 
     public byte getLowerLimitToGroup() {

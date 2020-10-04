@@ -7,9 +7,10 @@ import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,8 +41,15 @@ public class MicroserviceController {
         try {
             git = Git.open(tempRepositoryDirectory);
         } catch (IOException ioException) {
-            git = Git.cloneRepository().setURI(configuration.getGitRepositoryUri())
-                    .setDirectory(tempRepositoryDirectory).call();
+            CloneCommand cloneCommand = Git.cloneRepository().setURI(configuration.getGitRepositoryUri())
+                    .setDirectory(tempRepositoryDirectory);
+
+            if (configuration.isPrivateRepository())
+                cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(
+                        configuration.getRepositoryUserName(), configuration.getRepositoryPassword()));
+                        
+            git = cloneCommand.call();
+
         }
 
         GitRepository gitRepository = new GitRepository(git);
@@ -53,7 +61,7 @@ public class MicroserviceController {
                         .groupServicesInMicroservices();
 
         ResultDTO result = new MicroserviceBL(microservices).generateResultsFromMicroservicesSuggestions();
-        
+
         return ResponseEntity.ok(result);
     }
 }

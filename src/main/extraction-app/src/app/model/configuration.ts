@@ -4,6 +4,9 @@ export class Configuration {
   weightHistoryItem: number;
   lowerLimitToGroup: number;
   gitRepositoryUri: string;
+  repositoryUserName: string;
+  repositoryPassword: string;
+  isPrivateRepository: boolean;
   jarFilePath: string;
   includedPackages: string[] = new Array();
 }
