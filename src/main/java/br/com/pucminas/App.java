@@ -191,12 +191,12 @@ public class App {
                         double silhouetteCoefficient = -100;
                         double max = Math.max(meanDistanceNextCluster, meanDistanceSameMicroservice);
                         if (max != 0) {
-                            silhouetteCoefficient = (meanDistanceSameMicroservice - meanDistanceNextCluster) / max;
+                            silhouetteCoefficient = (meanDistanceNextCluster - meanDistanceSameMicroservice) / max;
                         }
                         printWriter.println(REPOSITORY_NAME + ";" + weightClassItem + ";" + weightMethodItem + ";"
                                 + weightHistoryItem + ";" + lowerLimitToGroup + ";" + microserviceAtual.getName() + ";"
-                                + serviceAtual.getFullMethodName() + ";" + meanDistanceNextCluster + ";"
-                                + meanDistanceSameMicroservice + ";" + silhouetteCoefficient);
+                                + serviceAtual.getFullMethodName() + ";" + meanDistanceSameMicroservice + ";"
+                                + meanDistanceNextCluster + ";" + silhouetteCoefficient);
 
                     }
                 }
