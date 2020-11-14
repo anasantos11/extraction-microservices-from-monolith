@@ -28,35 +28,50 @@ public class MicroserviceBL {
         List<ItemRedundancyDTO> classRedundacies = getClassRedundancies(numberMicroservices);
         List<ItemRedundancyDTO> methodRedundancies = getMethodRedundancies(numberMicroservices);
 
-        return new ResultDTO(this.microservices, classRedundacies, methodRedundancies);
+        return new ResultDTO(this.microservices, classRedundacies, methodRedundancies,
+                getPercentageMicrosserviceWithSameClass(numberMicroservices),
+                getPercentageMicrosserviceWithSameMethod(numberMicroservices));
+    }
+
+    private double getPercentageMicrosserviceWithSameClass(double numberMicroservices) {
+        List<ClassName> classNames = this.microservices.stream().map(MicroserviceDTO::getClasses).flatMap(List::stream)
+                .distinct().collect(Collectors.toList());
+        double timesClassItemsAreUsed = classNames.stream()
+                .mapToDouble(className -> getNumberMicroservicesContainsClass(className)).sum();
+
+        return timesClassItemsAreUsed / (classNames.size() * numberMicroservices);
+    }
+
+    private double getPercentageMicrosserviceWithSameMethod(double numberMicroservices) {
+        List<Method> methods = this.microservices.stream().map(MicroserviceDTO::getMethods).flatMap(List::stream)
+                .distinct().collect(Collectors.toList());
+        double timesMethodItemsAreUsed = methods.stream()
+                .mapToDouble(method -> getNumberMicroservicesContainsMethod(method)).sum();
+
+        return timesMethodItemsAreUsed / (methods.size() * numberMicroservices);
     }
 
     private List<ItemRedundancyDTO> getClassRedundancies(double numberMicroservices) {
         return this.microservices.stream().map(MicroserviceDTO::getClasses).flatMap(List::stream).distinct()
                 .map(className -> new ItemRedundancyDTO(className.getName(),
-                        getClassPercentageRedundancy(className, numberMicroservices)))
+                        getNumberMicroservicesContainsClass(className) / numberMicroservices))
                 .collect(Collectors.toList());
     }
 
-    private double getClassPercentageRedundancy(ClassName className, double numberMicroservices) {
-        double numberMicroservicesContainsClass = this.microservices.stream()
-                .filter(microservice -> microservice.getClasses().contains(className)).count();
-
-        return numberMicroservicesContainsClass / numberMicroservices;
+    private double getNumberMicroservicesContainsClass(ClassName className) {
+        return this.microservices.stream().filter(microservice -> microservice.getClasses().contains(className))
+                .count();
     }
 
     private List<ItemRedundancyDTO> getMethodRedundancies(double numberMicroservices) {
 
         return this.microservices.stream().map(MicroserviceDTO::getMethods).flatMap(List::stream).distinct()
                 .map(method -> new ItemRedundancyDTO(method.getFullMethodName(),
-                        getMethodPercentageRedundancy(method, numberMicroservices)))
+                        getNumberMicroservicesContainsMethod(method) / numberMicroservices))
                 .collect(Collectors.toList());
     }
 
-    private double getMethodPercentageRedundancy(Method method, double numberMicroservices) {
-        double numberMicroservicesContainsClass = this.microservices.stream()
-                .filter(microservice -> microservice.getMethods().contains(method)).count();
-
-        return numberMicroservicesContainsClass / numberMicroservices;
+    private double getNumberMicroservicesContainsMethod(Method method) {
+        return this.microservices.stream().filter(microservice -> microservice.getMethods().contains(method)).count();
     }
 }

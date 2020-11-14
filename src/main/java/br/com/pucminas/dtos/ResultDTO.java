@@ -6,12 +6,25 @@ public class ResultDTO {
     private List<MicroserviceDTO> microservices;
     private List<ItemRedundancyDTO> classRedundacies;
     private List<ItemRedundancyDTO> methodRedundancies;
+    private double percentageMicrosserviceWithSameClass;
+    private double percentageMicrosserviceWithSameMethods;
 
     public ResultDTO(List<MicroserviceDTO> microservices, List<ItemRedundancyDTO> classRedundacies,
-            List<ItemRedundancyDTO> methodRedundancies) {
+            List<ItemRedundancyDTO> methodRedundancies, double percentageMicrosserviceWithSameClass,
+            double percentageMicrosserviceWithSameMethods) {
         this.microservices = microservices;
         this.classRedundacies = classRedundacies;
         this.methodRedundancies = methodRedundancies;
+        this.percentageMicrosserviceWithSameClass = percentageMicrosserviceWithSameClass;
+        this.percentageMicrosserviceWithSameMethods = percentageMicrosserviceWithSameMethods;
+    }
+
+    public double getPercentageMicrosserviceWithSameMethods() {
+        return percentageMicrosserviceWithSameMethods;
+    }
+
+    public double getPercentageMicrosserviceWithSameClass() {
+        return percentageMicrosserviceWithSameClass;
     }
 
     public List<ItemRedundancyDTO> getMethodRedundancies() {
