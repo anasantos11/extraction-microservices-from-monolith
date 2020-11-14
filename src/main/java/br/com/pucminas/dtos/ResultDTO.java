@@ -1,16 +1,17 @@
 package br.com.pucminas.dtos;
 
 import java.util.List;
+import java.util.Set;
 
 public class ResultDTO {
     private List<MicroserviceDTO> microservices;
-    private List<ItemRedundancyDTO> classRedundacies;
-    private List<ItemRedundancyDTO> methodRedundancies;
+    private Set<ItemRedundancyDTO> classRedundacies;
+    private Set<ItemRedundancyDTO> methodRedundancies;
     private double percentageMicrosserviceWithSameClass;
     private double percentageMicrosserviceWithSameMethods;
 
-    public ResultDTO(List<MicroserviceDTO> microservices, List<ItemRedundancyDTO> classRedundacies,
-            List<ItemRedundancyDTO> methodRedundancies, double percentageMicrosserviceWithSameClass,
+    public ResultDTO(List<MicroserviceDTO> microservices, Set<ItemRedundancyDTO> classRedundacies,
+            Set<ItemRedundancyDTO> methodRedundancies, double percentageMicrosserviceWithSameClass,
             double percentageMicrosserviceWithSameMethods) {
         this.microservices = microservices;
         this.classRedundacies = classRedundacies;
@@ -27,11 +28,11 @@ public class ResultDTO {
         return percentageMicrosserviceWithSameClass;
     }
 
-    public List<ItemRedundancyDTO> getMethodRedundancies() {
+    public Set<ItemRedundancyDTO> getMethodRedundancies() {
         return methodRedundancies;
     }
 
-    public List<ItemRedundancyDTO> getClassRedundacies() {
+    public Set<ItemRedundancyDTO> getClassRedundacies() {
         return classRedundacies;
     }
 

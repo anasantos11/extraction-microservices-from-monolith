@@ -153,19 +153,41 @@ public class ServiceBL {
 	}
 
 	private double calculateSimilarity(Method a, Method b) {
-		double numberEqualClasses = a.getClasses().stream().filter(className -> b.getClasses().contains(className))
+		if (a.equals(b))
+			return 100;
+
+		Set<ClassName> aDistinctClasses = a.getClasses();
+		Set<Method> aDistinctMethods = a.getMethods();
+		Set<String> aDistinctCommits = a.getCommitIds();
+
+		Set<ClassName> bDistinctClasses = b.getClasses();
+		Set<Method> bDistinctMethods = b.getMethods();
+		Set<String> bDistinctCommits = b.getCommitIds();
+
+		double numberEqualClasses = aDistinctClasses.stream().filter(className -> bDistinctClasses.contains(className))
 				.count();
-		double numberEqualMethods = a.getMethods().stream().filter(method -> b.getMethods().contains(method)).count();
-		double numberEqualCommitIds = a.getCommitIds().stream().filter(commitId -> b.getCommitIds().contains(commitId))
+		double numberEqualMethods = aDistinctMethods.stream().filter(method -> bDistinctMethods.contains(method))
 				.count();
-		double numberClasses = a.getClasses().size();
-		double numberMethods = a.getMethods().size();
-		double numberCommitIds = a.getCommitIds().size();
+		double numberEqualCommitIds = aDistinctCommits.stream().filter(commitId -> bDistinctCommits.contains(commitId))
+				.count();
+
+		Set<ClassName> allDistinctClasses = new HashSet<>(aDistinctClasses);
+		allDistinctClasses.addAll(bDistinctClasses);
+
+		Set<Method> allDistinctMethods = new HashSet<>(aDistinctMethods);
+		allDistinctMethods.addAll(bDistinctMethods);
+
+		Set<String> allDistinctCommits = new HashSet<>(aDistinctCommits);
+		allDistinctCommits.addAll(bDistinctCommits);
+
+		double numberTotalClasses = allDistinctClasses.size();
+		double numberTotalMethods = allDistinctMethods.size();
+		double numberTotalCommitIds = allDistinctCommits.size();
 
 		double numerator = numberEqualClasses * this.weightClassItem + numberEqualMethods * this.weightMethodItem
 				+ numberEqualCommitIds * this.weightHistoryItem;
-		double denominator = numberClasses * this.weightClassItem + numberMethods * this.weightMethodItem
-				+ numberCommitIds * this.weightHistoryItem;
+		double denominator = numberTotalClasses * this.weightClassItem + numberTotalMethods * this.weightMethodItem
+				+ numberTotalCommitIds * this.weightHistoryItem;
 
 		return denominator > 0 ? (numerator / denominator) * 100 : 0;
 	}

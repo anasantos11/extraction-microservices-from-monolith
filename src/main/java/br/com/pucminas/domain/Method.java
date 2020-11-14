@@ -3,6 +3,7 @@ package br.com.pucminas.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,18 +59,18 @@ public class Method {
 	}
 
 	@JsonIgnore
-	public List<ClassName> getClasses() {
-		return this.methodsCalled.stream().map(Method::getClassName).collect(Collectors.toList());
+	public Set<ClassName> getClasses() {
+		return this.methodsCalled.stream().map(Method::getClassName).collect(Collectors.toSet());
 	}
 
-	public List<Method> getMethods() {
-		return this.methodsCalled;
+	public Set<Method> getMethods() {
+		return Set.copyOf(this.methodsCalled);
 	}
 
 	@JsonIgnore
-	public List<String> getCommitIds() {
-		List<String> commits = this.methodsCalled.stream().map(method -> method.getClassName().getCommitIds())
-				.flatMap(List::stream).collect(Collectors.toList());
+	public Set<String> getCommitIds() {
+		Set<String> commits = this.methodsCalled.stream().map(method -> method.getClassName().getCommitIds())
+				.flatMap(List::stream).collect(Collectors.toSet());
 		commits.addAll(this.className.getCommitIds());
 
 		return commits;

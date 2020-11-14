@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +18,7 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import br.com.pucminas.businesslogics.MicroserviceBL;
 import br.com.pucminas.businesslogics.ServiceBL;
+import br.com.pucminas.domain.ClassName;
 import br.com.pucminas.domain.Method;
 import br.com.pucminas.dtos.ConfigurationDTO;
 import br.com.pucminas.dtos.MicroserviceDTO;
@@ -28,8 +30,8 @@ public class App {
     public static String REPOSITORY_NAME;
 
     public static void main(String... args) {
-
         List<ConfigurationDTO> applications = new ArrayList<>();
+
         var kanleitos = new ConfigurationDTO();
         kanleitos.setGitRepositoryUri("https://github.com/anasantos11/kanleitos-API.git");
         kanleitos.setIsPrivateRepository(false);
@@ -309,19 +311,41 @@ public class App {
 
     private static double calculateSimilarity(Method a, Method b, byte weightClassItem, byte weightMethodItem,
             byte weightHistoryItem) {
-        double numberEqualClasses = a.getClasses().stream().filter(className -> b.getClasses().contains(className))
+        if (a.equals(b))
+            return 100;
+
+        Set<ClassName> aDistinctClasses = a.getClasses();
+        Set<Method> aDistinctMethods = a.getMethods();
+        Set<String> aDistinctCommits = a.getCommitIds();
+
+        Set<ClassName> bDistinctClasses = b.getClasses();
+        Set<Method> bDistinctMethods = b.getMethods();
+        Set<String> bDistinctCommits = b.getCommitIds();
+
+        double numberEqualClasses = aDistinctClasses.stream().filter(className -> bDistinctClasses.contains(className))
                 .count();
-        double numberEqualMethods = a.getMethods().stream().filter(method -> b.getMethods().contains(method)).count();
-        double numberEqualCommitIds = a.getCommitIds().stream().filter(commitId -> b.getCommitIds().contains(commitId))
+        double numberEqualMethods = aDistinctMethods.stream().filter(method -> bDistinctMethods.contains(method))
                 .count();
-        double numberClasses = a.getClasses().size();
-        double numberMethods = a.getMethods().size();
-        double numberCommitIds = a.getCommitIds().size();
+        double numberEqualCommitIds = aDistinctCommits.stream().filter(commitId -> bDistinctCommits.contains(commitId))
+                .count();
+
+        Set<ClassName> allDistinctClasses = new HashSet<>(aDistinctClasses);
+        allDistinctClasses.addAll(bDistinctClasses);
+
+        Set<Method> allDistinctMethods = new HashSet<>(aDistinctMethods);
+        allDistinctMethods.addAll(bDistinctMethods);
+
+        Set<String> allDistinctCommits = new HashSet<>(aDistinctCommits);
+        allDistinctCommits.addAll(bDistinctCommits);
+
+        double numberTotalClasses = allDistinctClasses.size();
+        double numberTotalMethods = allDistinctMethods.size();
+        double numberTotalCommitIds = allDistinctCommits.size();
 
         double numerator = numberEqualClasses * weightClassItem + numberEqualMethods * weightMethodItem
                 + numberEqualCommitIds * weightHistoryItem;
-        double denominator = numberClasses * weightClassItem + numberMethods * weightMethodItem
-                + numberCommitIds * weightHistoryItem;
+        double denominator = numberTotalClasses * weightClassItem + numberTotalMethods * weightMethodItem
+                + numberTotalCommitIds * weightHistoryItem;
 
         return denominator > 0 ? (numerator / denominator) * 100 : 0;
     }

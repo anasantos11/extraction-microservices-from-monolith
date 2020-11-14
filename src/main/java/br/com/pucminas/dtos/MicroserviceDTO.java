@@ -24,14 +24,14 @@ public class MicroserviceDTO {
         return services;
     }
 
-    public List<ClassName> getClasses() {
-        return this.services.stream().map(Method::getClasses).flatMap(List::stream).distinct()
-                .collect(Collectors.toList());
+    public Set<ClassName> getClasses() {
+        return this.services.stream().map(Method::getClasses).flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
-    public List<Method> getMethods() {
-        return this.services.stream().map(Method::getMethods).flatMap(List::stream).distinct()
-                .collect(Collectors.toList());
+    public Set<Method> getMethods() {
+        return this.services.stream().map(Method::getMethods).flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 
     public long getNumberServices() {
